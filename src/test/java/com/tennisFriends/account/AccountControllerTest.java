@@ -70,6 +70,7 @@ class AccountControllerTest {
 
         assertNotNull(account);
         assertNotEquals(account.getPassword(), "12345678");
+        assertNotNull(account.getEmailCheckToken());
         assertTrue(accountRepository.existsByEmail("kang@email.com"));
         then(mailSender).should().send(any(SimpleMailMessage.class));
     }
