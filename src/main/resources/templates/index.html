@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="fragments.html :: head"></head>
+
+    <body class="bg-light">
+
+        <div th:replace="fragments.html :: main-nav"></div>
+
+        <div>
+            테칮찾 가입을 완료하려면
+        </div>
+
+        <div class="container">
+            <div class="py-5 text-center">
+                <h2>테니스 친구 찾기</h2>
+            </div>
+            <div th:replace="fragments.html :: footer"></div>
+        </div>
+
+
+
+        <script type="application/javascript">
+                (function () {
+                    'use strict';
+
+                    window.addEventListener('load', function () {
+                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                        var forms = document.getElementsByClassName('needs-validation');
+
+                        // Loop over them and prevent submission
+                        Array.prototype.filter.call(forms, function (form) {
+                            form.addEventListener('submit', function (event) {
+                                if (form.checkValidity() === false) {
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                }
+                                form.classList.add('was-validated')
+                            }, false)
+                        })
+                    }, false)
+                }())
+        </script>
+    </body>
+</html>
