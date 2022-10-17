@@ -27,7 +27,7 @@ public class Account {
 
     private String emailCheckToken;
 
-    private LocalDateTime joinAt;
+    private LocalDateTime joinedAt;
 
     private String bio;
 
@@ -58,7 +58,7 @@ public class Account {
 
     public void completeSignUp() {
         this.emailVerified = true;
-        this.joinAt = LocalDateTime.now();
+        this.joinedAt = LocalDateTime.now();
     }
 
     public boolean isValidToken(String token) {
