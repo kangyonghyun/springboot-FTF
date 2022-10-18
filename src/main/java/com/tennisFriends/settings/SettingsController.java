@@ -19,9 +19,8 @@ import javax.validation.Valid;
 public class SettingsController {
 
     private final AccountService accountService;
-    public static final String SETTINGS_PROFILE_URL = "/settings/profile";
-
-    public static final String SETTINGS_PROFILE_VIEW_MAME = "settings/profile";
+    static final String SETTINGS_PROFILE_URL = "/settings/profile";
+    static final String SETTINGS_PROFILE_VIEW_MAME = "settings/profile";
 
     @GetMapping(SETTINGS_PROFILE_URL)
     public String profileUpdateForm(@CurrentUser Account account, Model model) {
