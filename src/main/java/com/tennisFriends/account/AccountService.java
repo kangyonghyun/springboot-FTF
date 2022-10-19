@@ -1,6 +1,7 @@
 package com.tennisFriends.account;
 
 import com.tennisFriends.domain.Account;
+import com.tennisFriends.settings.Notifications;
 import com.tennisFriends.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -91,6 +92,16 @@ public class AccountService implements UserDetailsService {
 
     public void updatePassword(Account account, String newPassword) {
         account.setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account);
+    }
+
+    public void updateNotifications(Account account, Notifications notifications) {
+        account.setFriendCreatedByEmail(notifications.isFriendCreatedByEmail());
+        account.setFriendCreatedByWeb(notifications.isFriendCreatedByWeb());
+        account.setFriendEnrollmentResultByEmail(notifications.isFriendEnrollmentResultByEmail());
+        account.setFriendEnrollmentResultByWeb(notifications.isFriendEnrollmentResultByWeb());
+        account.setFriendUpdatedByWeb(notifications.isFriendUpdatedByWeb());
+        account.setFriendUpdatedByEmail(notifications.isFriendUpdatedByEmail());
         accountRepository.save(account);
     }
 }

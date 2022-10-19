@@ -41,13 +41,13 @@ public class Account {
     private String profileImage;
 
     private boolean friendCreatedByEmail;
-    private boolean friendCreatedByWeb;
+    private boolean friendCreatedByWeb = true;
 
     private boolean friendEnrollmentResultByEmail;
-    private boolean friendEnrollmentResultByWeb;
+    private boolean friendEnrollmentResultByWeb = true;
 
     private boolean friendUpdatedByEmail;
-    private boolean friendUpdatedByWeb;
+    private boolean friendUpdatedByWeb = true;
     private LocalDateTime emailCheckTokenGeneratedAt;
 
 
