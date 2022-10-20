@@ -1,4 +1,4 @@
-package com.tennisFriends.settings;
+package com.tennisFriends.settings.form;
 
 import com.tennisFriends.domain.Account;
 import lombok.Data;

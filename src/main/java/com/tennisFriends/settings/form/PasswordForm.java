@@ -1,4 +1,4 @@
-package com.tennisFriends.settings;
+package com.tennisFriends.settings.form;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;

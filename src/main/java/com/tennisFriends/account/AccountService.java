@@ -1,8 +1,8 @@
 package com.tennisFriends.account;
 
 import com.tennisFriends.domain.Account;
-import com.tennisFriends.settings.Notifications;
-import com.tennisFriends.settings.Profile;
+import com.tennisFriends.settings.form.Notifications;
+import com.tennisFriends.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
