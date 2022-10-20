@@ -6,6 +6,8 @@ import com.tennisFriends.domain.Account;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -116,5 +118,42 @@ class SettingsControllerTest {
                 .andExpect(model().hasErrors())
                 .andExpect(model().attributeExists("passwordForm"))
                 .andExpect(model().attributeExists("account"));
+    }
+
+    @WithAccount("yong")
+    @Test
+    @DisplayName("닉네임 변경 폼")
+    void updateNickname_form() throws Exception {
+        mockMvc.perform(get(SettingsController.SETTINGS_ACCOUNT_URL))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("nicknameForm"));
+    }
+
+    @WithAccount("yong")
+    @Test
+    @DisplayName("닉네임 변경하기 - 입력값 정상")
+    void updateNickname() throws Exception {
+        mockMvc.perform(post(SettingsController.SETTINGS_ACCOUNT_URL)
+                        .with(csrf())
+                        .param("nickname", "test"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(SettingsController.SETTINGS_ACCOUNT_URL))
+                .andExpect(flash().attributeExists("message"));
+    }
+
+    @WithAccount("yong")
+    @ParameterizedTest
+    @ValueSource(strings = {"as", "#asd", "asd%", "123456789123456789111"})
+    @DisplayName("닉네임 변경하기 - 입력값 에러")
+    void updateNickname_error(String nickname) throws Exception {
+        mockMvc.perform(post(SettingsController.SETTINGS_ACCOUNT_URL)
+                        .param("nickname", nickname)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name(SettingsController.SETTINGS_ACCOUNT_VIEW_NAME))
+                .andExpect(model().hasErrors())
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("nicknameForm"));
     }
 }
