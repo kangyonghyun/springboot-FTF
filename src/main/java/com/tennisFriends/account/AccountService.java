@@ -97,4 +97,10 @@ public class AccountService implements UserDetailsService {
         modelMapper.map(notifications, account);
         accountRepository.save(account);
     }
+
+    public void updateAccount(Account account, String name) {
+        account.setNickname(name);
+        accountRepository.save(account);
+        login(account);
+    }
 }
