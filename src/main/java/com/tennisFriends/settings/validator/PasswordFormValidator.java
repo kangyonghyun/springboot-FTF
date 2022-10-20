@@ -1,4 +1,4 @@
-package com.tennisFriends.settings;
+package com.tennisFriends.settings.validator;
 
 import com.tennisFriends.settings.form.PasswordForm;
 import org.springframework.validation.Errors;

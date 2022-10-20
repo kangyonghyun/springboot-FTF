@@ -6,6 +6,7 @@ import com.tennisFriends.domain.Account;
 import com.tennisFriends.settings.form.Notifications;
 import com.tennisFriends.settings.form.PasswordForm;
 import com.tennisFriends.settings.form.Profile;
+import com.tennisFriends.settings.validator.PasswordFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
