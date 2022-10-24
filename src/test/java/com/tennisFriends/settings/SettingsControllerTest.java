@@ -1,8 +1,13 @@
 package com.tennisFriends.settings;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tennisFriends.WithAccount;
 import com.tennisFriends.account.AccountRepository;
+import com.tennisFriends.account.AccountService;
 import com.tennisFriends.domain.Account;
+import com.tennisFriends.domain.Tag;
+import com.tennisFriends.settings.form.TagForm;
+import com.tennisFriends.tag.TagRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,8 +16,12 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -20,6 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
 class SettingsControllerTest {
@@ -30,6 +40,12 @@ class SettingsControllerTest {
     AccountRepository accountRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    ObjectMapper objectMapper;
+    @Autowired
+    TagRepository tagRepository;
+    @Autowired
+    AccountService accountService;
 
     @AfterEach
     void afterEach() {
@@ -156,4 +172,59 @@ class SettingsControllerTest {
                 .andExpect(model().attributeExists("account"))
                 .andExpect(model().attributeExists("nicknameForm"));
     }
+
+    @WithAccount("yong")
+    @Test
+    @DisplayName("태그 수정 폼")
+    void updateTagsForm() throws Exception {
+        mockMvc.perform(get(SettingsController.SETTINGS_TAGS_URL))
+                .andExpect(view().name(SettingsController.SETTINGS_TAGS_VIEW_NAME))
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attributeExists("tags"))
+                .andExpect(model().attributeExists("whitelist"));
+    }
+
+    @WithAccount("yong")
+    @Test
+    @DisplayName("계정에 태그 추가")
+    void addTags() throws Exception {
+        TagForm tagForm = new TagForm();
+        tagForm.setTagTitle("newTag");
+
+        mockMvc.perform(post(SettingsController.SETTINGS_TAGS_URL + "/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(tagForm))
+                        .with(csrf()))
+                .andExpect(status().isOk());
+
+        Tag newTag = tagRepository.findByTitle("newTag").get();
+        assertThat(newTag).isNotNull();
+        Set<Tag> tags = accountRepository.findByNickname("yong").getTags();
+        assertThat(tags).contains(newTag);
+    }
+
+    @WithAccount("yong")
+    @Test
+    @DisplayName("계정에 태그 삭제")
+    void removeTags() throws Exception {
+        Account yong = accountRepository.findByNickname("yong");
+        Tag newTag = tagRepository.save(Tag.builder().title("newTag").build());
+        accountService.addTag(yong, newTag);
+
+        assertThat(yong.getTags()).contains(newTag);
+
+        TagForm tagForm = new TagForm();
+        tagForm.setTagTitle("newTag");
+
+        mockMvc.perform(post(SettingsController.SETTINGS_TAGS_URL + "/remove")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(tagForm))
+                        .with(csrf()))
+                .andExpect(status().isOk());
+
+        accountService.removeTag(yong, newTag);
+
+        assertThat(yong.getTags()).doesNotContain(newTag);
+    }
+
 }
