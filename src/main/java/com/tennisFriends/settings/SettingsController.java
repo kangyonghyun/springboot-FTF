@@ -6,10 +6,12 @@ import com.tennisFriends.account.AccountService;
 import com.tennisFriends.account.CurrentUser;
 import com.tennisFriends.domain.Account;
 import com.tennisFriends.domain.Tag;
+import com.tennisFriends.domain.Zone;
 import com.tennisFriends.settings.form.*;
 import com.tennisFriends.settings.validator.NicknameValidator;
 import com.tennisFriends.settings.validator.PasswordFormValidator;
 import com.tennisFriends.tag.TagRepository;
+import com.tennisFriends.zone.ZoneRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -40,13 +41,15 @@ public class SettingsController {
     static final String SETTINGS_ACCOUNT_VIEW_NAME = "settings/account";
     static final String SETTINGS_TAGS_URL = "/settings/tags";
     static final String SETTINGS_TAGS_VIEW_NAME = "settings/tags";
+    public static final String SETTINGS_ZONES_URL = "/settings/zones";
+    public static final String SETTINGS_ZONES_VIEW_NAME = "settings/zones";
     private final AccountService accountService;
     private final ModelMapper modelMapper;
     private final TagRepository tagRepository;
     @Autowired
     private final NicknameValidator nicknameValidator;
-
     private final ObjectMapper objectMapper;
+    private final ZoneRepository zoneRepository;
 
     @InitBinder("passwordForm")
     public void passwordFormInitBinder(WebDataBinder webDataBinder) {
@@ -168,6 +171,37 @@ public class SettingsController {
         }
 
         accountService.removeTag(account, tag);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(SETTINGS_ZONES_URL)
+    public String updateZones(@CurrentUser Account account, Model model) throws JsonProcessingException {
+        model.addAttribute(account);
+        Set<Zone> zones = accountService.getZones(account);
+        model.addAttribute("zones", zones.stream().map(Zone::toString).collect(Collectors.toList()));
+        List<String> allZones = zoneRepository.findAll().stream().map(Zone::toString).collect(Collectors.toList());
+        model.addAttribute("whitelist", objectMapper.writeValueAsString(allZones));
+        return SETTINGS_ZONES_VIEW_NAME;
+    }
+
+    @PostMapping(SETTINGS_ZONES_URL + "/add")
+    @ResponseBody
+    public ResponseEntity addZone(@CurrentUser Account account, @RequestBody ZoneForm zoneForm) {
+        Zone zone = zoneRepository.findByCityAndProvince(zoneForm.getCityName(), zoneForm.getProvinceName());
+        if (zone == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        accountService.addZone(account, zone);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(SETTINGS_ZONES_URL + "/remove")
+    public ResponseEntity removeZone(@CurrentUser Account account, @RequestBody ZoneForm zoneForm) {
+        Zone zone = zoneRepository.findByCityAndProvince(zoneForm.getCityName(), zoneForm.getProvinceName());
+        if (zone == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        accountService.removeZone(account, zone);
         return ResponseEntity.ok().build();
     }
 
