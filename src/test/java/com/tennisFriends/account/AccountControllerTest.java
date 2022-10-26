@@ -1,6 +1,8 @@
 package com.tennisFriends.account;
 
 import com.tennisFriends.domain.Account;
+import com.tennisFriends.mail.EmailMessage;
+import com.tennisFriends.mail.EmailService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +94,9 @@ class AccountControllerTest {
                 .andExpect(view().name("account/sign-up"));
     }
 
+    @MockBean
+    EmailService emailService;
+
     @Test
     @DisplayName("회원 가입 처리 - 입력값 정상")
     void signUpSubmit_with_correct_input() throws Exception {
@@ -110,7 +115,7 @@ class AccountControllerTest {
         assertNotEquals(account.getPassword(), "12345678");
         assertNotNull(account.getEmailCheckToken());
         assertTrue(accountRepository.existsByEmail("kang@email.com"));
-        then(mailSender).should().send(any(SimpleMailMessage.class));
+        then(emailService).should().sendEmail(any(EmailMessage.class));
     }
 
 }
