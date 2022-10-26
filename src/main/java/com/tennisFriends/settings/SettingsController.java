@@ -28,8 +28,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.tennisFriends.settings.SettingsController.ROOT;
+import static com.tennisFriends.settings.SettingsController.SETTINGS;
+
 @Controller
-@RequestMapping("/settings")
+@RequestMapping(ROOT + SETTINGS)
 @RequiredArgsConstructor
 public class SettingsController {
     static final String ROOT = "/";
@@ -38,11 +41,9 @@ public class SettingsController {
     static final String PASSWORD = "/password";
     static final String NOTIFICATIONS = "/notifications";
     static final String ACCOUNT = "/account";
-
     static final String TAGS = "/tags";
     static final String ZONES = "/zones";
-    public static final String SETTINGS_ZONES_URL = "/settings/zones";
-    public static final String SETTINGS_ZONES_VIEW_NAME = "settings/zones";
+
     private final AccountService accountService;
     private final ModelMapper modelMapper;
     private final TagRepository tagRepository;
