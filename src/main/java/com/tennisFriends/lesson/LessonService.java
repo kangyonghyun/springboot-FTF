@@ -18,4 +18,16 @@ public class LessonService {
         newLesson.addManager(account);
         return newLesson;
     }
+
+    public Lesson getLesson(String path) {
+        Lesson lesson = lessonRepository.findByPath(path);
+        checkIfExistingLesson(path, lesson);
+        return lesson;
+    }
+
+    private void checkIfExistingLesson(String path, Lesson lesson) {
+        if (lesson == null) {
+            throw new IllegalArgumentException(path + "에 해당하는 레슨이 없습니다.");
+        }
+    }
 }

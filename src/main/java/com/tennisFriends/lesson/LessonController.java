@@ -13,6 +13,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -24,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 public class LessonController {
 
     private final LessonService lessonService;
+    private final LessonRepository lessonRepository;
     private final ModelMapper modelMapper;
     private final LessonFormValidator lessonFormValidator;
 
@@ -40,11 +42,27 @@ public class LessonController {
     }
 
     @PostMapping("/new-lesson")
-    public String newStudySubmit(@CurrentUser Account account, @Valid LessonForm lessonForm, Errors errors) {
+    public String newStudySubmit(@CurrentUser Account account, @Valid LessonForm lessonForm, Errors errors, Model model) {
         if (errors.hasErrors()) {
+            model.addAttribute(account);
             return "lesson/form";
         }
         Lesson newLesson = lessonService.createNewLesson(modelMapper.map(lessonForm, Lesson.class), account);
         return "redirect:/lesson/" + URLEncoder.encode(newLesson.getPath(), StandardCharsets.UTF_8);
+    }
+
+    @GetMapping("/lesson/{path}")
+    public String viewLesson(@CurrentUser Account account, @PathVariable String path, Model model) {
+        model.addAttribute(account);
+        model.addAttribute(lessonRepository.findByPath(path));
+        return "lesson/view";
+    }
+
+    @GetMapping("/lesson/{path}/members")
+    public String viewLessonMembers(@CurrentUser Account account, @PathVariable String path, Model model) {
+        Lesson lesson = lessonService.getLesson(path);
+        model.addAttribute(account);
+        model.addAttribute(lesson);
+        return "lesson/members";
     }
 }
