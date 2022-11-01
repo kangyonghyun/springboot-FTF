@@ -72,4 +72,8 @@ public class Lesson {
     public boolean isManager(UserAccount userAccount) {
         return this.managers.contains(userAccount.getAccount());
     }
+
+    public boolean isManagedBy(Account account) {
+        return getManagers().contains(account);
+    }
 }

@@ -2,7 +2,10 @@ package com.tennisFriends.lesson;
 
 import com.tennisFriends.domain.Account;
 import com.tennisFriends.domain.Lesson;
+import com.tennisFriends.lesson.form.LessonDescriptionForm;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class LessonService {
 
     private final LessonRepository lessonRepository;
+    private final ModelMapper modelMapper;
 
     public Lesson createNewLesson(Lesson lesson, Account account) {
         Lesson newLesson = lessonRepository.save(lesson);
@@ -29,5 +33,21 @@ public class LessonService {
         if (lesson == null) {
             throw new IllegalArgumentException(path + "에 해당하는 레슨이 없습니다.");
         }
+    }
+
+    public Lesson getLessonToUpdate(Account account, String path) {
+        Lesson lesson = getLesson(path);
+        checkIfManager(lesson, account);
+        return lesson;
+    }
+
+    private void checkIfManager(Lesson lesson, Account account) {
+        if (!lesson.isManagedBy(account)) {
+            throw new AccessDeniedException("해당 기능을 사용할 수 없습니다.");
+        }
+    }
+
+    public void updateLessonDescription(Lesson lesson, LessonDescriptionForm lessonDescriptionForm) {
+        modelMapper.map(lessonDescriptionForm, lesson);
     }
 }
