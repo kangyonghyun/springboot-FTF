@@ -50,4 +50,16 @@ public class LessonService {
     public void updateLessonDescription(Lesson lesson, LessonDescriptionForm lessonDescriptionForm) {
         modelMapper.map(lessonDescriptionForm, lesson);
     }
+
+    public void updateLessonImage(Lesson lesson, String image) {
+        lesson.setImage(image);
+    }
+
+    public void enableLessonBanner(Lesson lesson) {
+        lesson.setUseBanner(true);
+    }
+
+    public void disableLessonBanner(Lesson lesson) {
+        lesson.setUseBanner(false);
+    }
 }

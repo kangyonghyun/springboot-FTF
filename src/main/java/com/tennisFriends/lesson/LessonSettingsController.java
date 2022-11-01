@@ -56,4 +56,33 @@ public class LessonSettingsController {
         return URLEncoder.encode(path, StandardCharsets.UTF_8);
     }
 
+    @GetMapping("/banner")
+    public String lessonImageForm(@CurrentUser Account account, @PathVariable String path, Model model) {
+        Lesson lesson = lessonService.getLessonToUpdate(account, path);
+        model.addAttribute(account);
+        model.addAttribute(lesson);
+        return "lesson/settings/banner";
+    }
+
+    @PostMapping("/banner")
+    public String lessonImageSubmit(@CurrentUser Account account, @PathVariable String path, String image, RedirectAttributes attributes) {
+        Lesson lesson = lessonService.getLessonToUpdate(account, path);
+        lessonService.updateLessonImage(lesson, image);
+        attributes.addFlashAttribute("message", "레슨 이미지를 수정했습니다.");
+        return "redirect:/lesson/" + getPath(path) + "/settings/banner";
+    }
+
+    @PostMapping("/banner/enable")
+    public String enableLessonBanner(@CurrentUser Account account, @PathVariable String path) {
+        Lesson lesson = lessonService.getLessonToUpdate(account, path);
+        lessonService.enableLessonBanner(lesson);
+        return "redirect:/lesson/" + getPath(path) + "/settings/banner";
+    }
+
+    @PostMapping("/banner/disable")
+    public String disableLessonBanner(@CurrentUser Account account, @PathVariable String path) {
+        Lesson lesson = lessonService.getLessonToUpdate(account, path);
+        lessonService.disableLessonBanner(lesson);
+        return "redirect:/lesson/" + getPath(path) + "/settings/banner";
+    }
 }
