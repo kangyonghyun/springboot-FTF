@@ -53,8 +53,9 @@ public class LessonController {
 
     @GetMapping("/lesson/{path}")
     public String viewLesson(@CurrentUser Account account, @PathVariable String path, Model model) {
+        Lesson lesson = lessonService.getLesson(path);
         model.addAttribute(account);
-        model.addAttribute(lessonRepository.findByPath(path));
+        model.addAttribute(lesson);
         return "lesson/view";
     }
 
