@@ -6,9 +6,12 @@ import com.tennisFriends.account.CurrentUser;
 import com.tennisFriends.domain.Account;
 import com.tennisFriends.domain.Lesson;
 import com.tennisFriends.domain.Tag;
+import com.tennisFriends.domain.Zone;
 import com.tennisFriends.lesson.form.LessonDescriptionForm;
 import com.tennisFriends.settings.form.TagForm;
+import com.tennisFriends.settings.form.ZoneForm;
 import com.tennisFriends.tag.TagRepository;
+import com.tennisFriends.zone.ZoneRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +38,7 @@ public class LessonSettingsController {
     private final ModelMapper modelMapper;
     private final ObjectMapper objectMapper;
     private final TagRepository tagRepository;
+    private final ZoneRepository zoneRepository;
 
     @GetMapping("/description")
     public String viewLessonSetting(@CurrentUser Account account, @PathVariable String path, Model model) {
@@ -124,6 +128,42 @@ public class LessonSettingsController {
             return ResponseEntity.badRequest().build();
         }
         lessonService.removeTag(lesson, tag);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/zones")
+    public String lessonZonesForm(@CurrentUser Account account, @PathVariable String path, Model model) throws JsonProcessingException {
+        Lesson lesson = lessonService.getLessonToUpdate(account, path);
+        model.addAttribute(account);
+        model.addAttribute(lesson);
+        model.addAttribute("zones", lesson.getZones().stream()
+                .map(Zone::toString).collect(Collectors.toList()));
+        List<String> allZones = zoneRepository.findAll().stream()
+                .map(Zone::toString)
+                .collect(Collectors.toList());
+        model.addAttribute("whitelist", objectMapper.writeValueAsString(allZones));
+        return "lesson/settings/zones";
+    }
+
+    @PostMapping("/zones/add")
+    public ResponseEntity addZone(@CurrentUser Account account, @PathVariable String path, @RequestBody ZoneForm zoneForm) {
+        Lesson lesson = lessonService.getLessonToUpdateZone(account, path);
+        Zone zone = zoneRepository.findByCityAndProvince(zoneForm.getCityName(), zoneForm.getProvinceName());
+        if (zone == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        lessonService.addZone(lesson, zone);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/zones/remove")
+    public ResponseEntity removeZone(@CurrentUser Account account, @PathVariable String path, @RequestBody ZoneForm zoneForm) {
+        Lesson lesson = lessonService.getLessonToUpdateZone(account, path);
+        Zone zone = zoneRepository.findByCityAndProvince(zoneForm.getCityName(), zoneForm.getProvinceName());
+        if (zone == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        lessonService.removeZone(lesson, zone);
         return ResponseEntity.ok().build();
     }
 
