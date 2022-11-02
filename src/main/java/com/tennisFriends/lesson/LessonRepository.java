@@ -1,6 +1,7 @@
 package com.tennisFriends.lesson;
 
 import com.tennisFriends.domain.Lesson;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,5 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
     boolean existsByPath(String path);
 
+    @EntityGraph(attributePaths = {"tags", "zones", "managers", "members"}, type = EntityGraph.EntityGraphType.LOAD)
     Lesson findByPath(String path);
+
+    @EntityGraph(attributePaths = {"tags", "managers"})
+    Lesson findLessonWithTagsByPath(String path);
 }

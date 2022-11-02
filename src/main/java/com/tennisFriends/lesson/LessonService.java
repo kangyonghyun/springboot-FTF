@@ -2,6 +2,7 @@ package com.tennisFriends.lesson;
 
 import com.tennisFriends.domain.Account;
 import com.tennisFriends.domain.Lesson;
+import com.tennisFriends.domain.Tag;
 import com.tennisFriends.lesson.form.LessonDescriptionForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -61,5 +62,20 @@ public class LessonService {
 
     public void disableLessonBanner(Lesson lesson) {
         lesson.setUseBanner(false);
+    }
+
+    public Lesson getLessonToUpdateTag(Account account, String path) {
+        Lesson lesson = lessonRepository.findLessonWithTagsByPath(path);
+        checkIfExistingLesson(path, lesson);
+        checkIfManager(lesson, account);
+        return lesson;
+    }
+
+    public void addTag(Lesson lesson, Tag tag) {
+        lesson.getTags().add(tag);
+    }
+
+    public void removeTag(Lesson lesson, Tag tag) {
+        lesson.getTags().remove(tag);
     }
 }
