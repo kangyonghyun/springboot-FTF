@@ -191,4 +191,29 @@ public class LessonSettingsController {
         return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/lesson";
     }
 
+    @PostMapping("/recruit/start")
+    public String startRecruit(@CurrentUser Account account, @PathVariable String path, RedirectAttributes attributes) {
+        Lesson lesson = lessonService.getLessonToUpdateStatus(account, path);
+        if (!lesson.canUpdateRecruiting()) {
+            attributes.addFlashAttribute("message", "1시간 안에 인원 모집 설정을 여러번 변경할 수 없습니다.");
+            return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/lesson";
+        }
+        lessonService.startRecruit(lesson);
+        attributes.addFlashAttribute("message", "인원 모집을 시작합니다.");
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/lesson";
+    }
+
+    @PostMapping("/recruit/stop")
+    public String stopRecruit(@CurrentUser Account account, @PathVariable String path, RedirectAttributes attributes) {
+        Lesson lesson = lessonService.getLessonToUpdateStatus(account, path);
+        if (!lesson.canUpdateRecruiting()) {
+            attributes.addFlashAttribute("message", "1시간 안에 인원 모집 설정을 여러번 변경할 수 없습니다.");
+            return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/lesson";
+        }
+        lessonService.stopRecruit(lesson);
+        attributes.addFlashAttribute("message", "인원 모집을 종료합니다.");
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/lesson";
+    }
+
+
 }

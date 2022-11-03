@@ -109,4 +109,12 @@ public class LessonService {
     public void close(Lesson lesson) {
         lesson.close();
     }
+
+    public void startRecruit(Lesson lesson) {
+        lesson.startRecruit();
+    }
+
+    public void stopRecruit(Lesson lesson) {
+        lesson.stopRecruit();
+    }
 }
