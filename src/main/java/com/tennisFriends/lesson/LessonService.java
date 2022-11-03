@@ -11,6 +11,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.tennisFriends.lesson.form.LessonForm.VALID_PATH_PATTERN;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -116,5 +118,16 @@ public class LessonService {
 
     public void stopRecruit(Lesson lesson) {
         lesson.stopRecruit();
+    }
+
+    public boolean isValidPath(String newPath) {
+        if (!newPath.matches(VALID_PATH_PATTERN)) {
+            return false;
+        }
+        return !lessonRepository.existsByPath(newPath);
+    }
+
+    public void updateLessonPath(Lesson lesson, String newPath) {
+        lesson.setPath(newPath);
     }
 }

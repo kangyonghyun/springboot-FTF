@@ -215,5 +215,20 @@ public class LessonSettingsController {
         return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/lesson";
     }
 
+    @PostMapping("/lesson/path")
+    public String updateLessonPath(@CurrentUser Account account, @PathVariable String path, String newPath,
+                                   Model model, RedirectAttributes attributes) {
+        Lesson lesson = lessonService.getLessonToUpdateStatus(account, path);
+        if (!lessonService.isValidPath(newPath)) {
+            model.addAttribute(account);
+            model.addAttribute(lesson);
+            model.addAttribute("lessonPathError", "해당 레슨 경로는 사용할 수 없습니다. 다른 값을 입력해주세요.");
+            return "lesson/settings/lesson";
+        }
+        lessonService.updateLessonPath(lesson, newPath);
+        attributes.addFlashAttribute("message", "레슨 경로를 수정했습니다.");
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/lesson";
+    }
+
 
 }
