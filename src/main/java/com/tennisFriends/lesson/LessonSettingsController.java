@@ -230,5 +230,27 @@ public class LessonSettingsController {
         return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/lesson";
     }
 
+    @PostMapping("/lesson/title")
+    public String updateLessonTitle(@CurrentUser Account account, @PathVariable String path, String newTitle,
+                                    Model model, RedirectAttributes attributes) {
+        Lesson lesson = lessonService.getLessonToUpdateStatus(account, path);
+        if (!lessonService.isValidTitle(newTitle)) {
+            model.addAttribute(account);
+            model.addAttribute(lesson);
+            model.addAttribute("lessonTitleError", "해당 레슨 제목은 사용할 수 없습니다. 다른 값을 입력해주세요.");
+            return "lesson/settings/lesson";
+        }
+        lessonService.updateLessonTitle(lesson, newTitle);
+        attributes.addFlashAttribute("message", "레슨 제목을 수정했습니다.");
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/lesson";
+    }
+
+    @PostMapping("/lesson/remove")
+    public String removeLesson(@CurrentUser Account account, @PathVariable String path) {
+        Lesson lesson = lessonService.getLessonToUpdateStatus(account, path);
+        lessonService.remove(lesson);
+        return "redirect:/";
+    }
+
 
 }

@@ -101,10 +101,6 @@ public class Lesson {
         }
     }
 
-    public boolean isRemovable() {
-        return !this.published; // TODO 모임을 했던 스터디는 삭제할 수 없다.
-    }
-
     public boolean canUpdateRecruiting() {
         return this.published && this.recruitingUpdateDateTime == null || this.recruitingUpdateDateTime.isBefore(LocalDateTime.now().minusHours(1));
     }
@@ -126,4 +122,9 @@ public class Lesson {
             throw new RuntimeException("인원 모집을 종료할 수 없습니다. 레슨을 공개하거나 한 시간 뒤 다시 시도하세요.");
         }
     }
+
+    public boolean isRemovable() {
+        return !this.published;
+    }
+
 }

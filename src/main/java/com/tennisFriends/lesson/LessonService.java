@@ -130,4 +130,20 @@ public class LessonService {
     public void updateLessonPath(Lesson lesson, String newPath) {
         lesson.setPath(newPath);
     }
+
+    public boolean isValidTitle(String newTitle) {
+        return newTitle.length() <= 50;
+    }
+
+    public void updateLessonTitle(Lesson lesson, String newTitle) {
+        lesson.setTitle(newTitle);
+    }
+
+    public void remove(Lesson lesson) {
+        if (lesson.isRemovable()) {
+            lessonRepository.delete(lesson);
+        } else {
+            throw new IllegalArgumentException("레슨을 삭제할 수 없습니다.");
+        }
+    }
 }
