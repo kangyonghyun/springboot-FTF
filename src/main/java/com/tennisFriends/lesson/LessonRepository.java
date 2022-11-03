@@ -17,4 +17,7 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
     @EntityGraph(attributePaths = {"zones", "managers"})
     Lesson findLessonWithZonesByPath(String path);
+
+    @EntityGraph(attributePaths = "managers")
+    Lesson findLessonWithManagersByPath(String path);
 }

@@ -167,4 +167,28 @@ public class LessonSettingsController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/lesson")
+    public String lessonSettingForm(@CurrentUser Account account, @PathVariable String path, Model model) {
+        Lesson lesson = lessonService.getLessonToUpdate(account, path);
+        model.addAttribute(account);
+        model.addAttribute(lesson);
+        return "lesson/settings/lesson";
+    }
+
+    @PostMapping("/lesson/publish")
+    public String publishLesson(@CurrentUser Account account, @PathVariable String path, RedirectAttributes attributes) {
+        Lesson lesson = lessonService.getLessonToUpdateStatus(account, path);
+        lessonService.publish(lesson);
+        attributes.addFlashAttribute("message", "레슨을 공개했습니다.");
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/lesson";
+    }
+
+    @PostMapping("/lesson/close")
+    public String closeLesson(@CurrentUser Account account, @PathVariable String path, RedirectAttributes attributes) {
+        Lesson lesson = lessonService.getLessonToUpdateStatus(account, path);
+        lessonService.close(lesson);
+        attributes.addFlashAttribute("message", "레슨을 종료했습니다.");
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/lesson";
+    }
+
 }

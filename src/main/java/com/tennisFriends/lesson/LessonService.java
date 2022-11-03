@@ -94,4 +94,19 @@ public class LessonService {
     public void removeZone(Lesson lesson, Zone zone) {
         lesson.getZones().remove(zone);
     }
+
+    public Lesson getLessonToUpdateStatus(Account account, String path) {
+        Lesson lesson = lessonRepository.findLessonWithManagersByPath(path);
+        checkIfExistingLesson(path, lesson);
+        checkIfManager(lesson, account);
+        return lesson;
+    }
+
+    public void publish(Lesson lesson) {
+        lesson.publish();
+    }
+
+    public void close(Lesson lesson) {
+        lesson.close();
+    }
 }

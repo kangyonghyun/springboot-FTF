@@ -4,6 +4,8 @@ import com.tennisFriends.account.UserAccount;
 import lombok.*;
 
 import javax.persistence.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -75,5 +77,31 @@ public class Lesson {
 
     public boolean isManagedBy(Account account) {
         return getManagers().contains(account);
+    }
+
+    public void publish() {
+        if (!this.closed && !this.published) {
+            this.published = true;
+            this.publishedDateTime = LocalDateTime.now();
+        } else {
+            throw new RuntimeException("레슨을 공개할 수 없는 상태입니다. 레슨을 이미 공개했거나 종료했습니다.");
+        }
+    }
+
+    public String getEncodePath() {
+        return URLEncoder.encode(this.path, StandardCharsets.UTF_8);
+    }
+
+    public void close() {
+        if (this.published && !this.closed) {
+            this.closed = true;
+            this.publishedDateTime = LocalDateTime.now();
+        } else {
+            throw new RuntimeException("레슨을 종료할 수 없습니다. 레슨을 공개하지 않았거나 이미 종료한 레슨입니다.");
+        }
+    }
+
+    public boolean isRemovable() {
+        return !this.published; // TODO 모임을 했던 스터디는 삭제할 수 없다.
     }
 }
