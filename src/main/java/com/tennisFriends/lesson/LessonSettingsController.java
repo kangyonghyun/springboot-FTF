@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -33,7 +30,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LessonSettingsController {
 
-    private final LessonRepository lessonRepository;
     private final LessonService lessonService;
     private final ModelMapper modelMapper;
     private final ObjectMapper objectMapper;
@@ -60,12 +56,8 @@ public class LessonSettingsController {
             return "lesson/settings/description";
         }
         lessonService.updateLessonDescription(lesson, lessonDescriptionForm);
-        attributes.addFlashAttribute("message", "스터디 소개를 수정했습니다.");
-        return "redirect:/lesson/" + getPath(path) + "/settings/description";
-    }
-
-    private String getPath(String path) {
-        return URLEncoder.encode(path, StandardCharsets.UTF_8);
+        attributes.addFlashAttribute("message", "레슨 소개를 수정했습니다.");
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/description";
     }
 
     @GetMapping("/banner")
@@ -81,21 +73,21 @@ public class LessonSettingsController {
         Lesson lesson = lessonService.getLessonToUpdate(account, path);
         lessonService.updateLessonImage(lesson, image);
         attributes.addFlashAttribute("message", "레슨 이미지를 수정했습니다.");
-        return "redirect:/lesson/" + getPath(path) + "/settings/banner";
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/banner";
     }
 
     @PostMapping("/banner/enable")
     public String enableLessonBanner(@CurrentUser Account account, @PathVariable String path) {
         Lesson lesson = lessonService.getLessonToUpdate(account, path);
         lessonService.enableLessonBanner(lesson);
-        return "redirect:/lesson/" + getPath(path) + "/settings/banner";
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/banner";
     }
 
     @PostMapping("/banner/disable")
     public String disableLessonBanner(@CurrentUser Account account, @PathVariable String path) {
         Lesson lesson = lessonService.getLessonToUpdate(account, path);
         lessonService.disableLessonBanner(lesson);
-        return "redirect:/lesson/" + getPath(path) + "/settings/banner";
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/settings/banner";
     }
 
     @GetMapping("/tags")
@@ -251,6 +243,5 @@ public class LessonSettingsController {
         lessonService.remove(lesson);
         return "redirect:/";
     }
-
 
 }
