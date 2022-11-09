@@ -146,4 +146,12 @@ public class LessonService {
             throw new IllegalArgumentException("레슨을 삭제할 수 없습니다.");
         }
     }
+
+    public void addMember(Lesson lesson, Account account) {
+        lesson.addMember(account);
+    }
+
+    public void leaveMember(Lesson lesson, Account account) {
+        lesson.leaveMember(account);
+    }
 }

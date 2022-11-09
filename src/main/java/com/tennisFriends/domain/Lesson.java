@@ -57,6 +57,8 @@ public class Lesson {
 
     private boolean useBanner;
 
+    private int memberCount;
+
     public void addManager(Account account) {
         this.managers.add(account);
     }
@@ -127,4 +129,13 @@ public class Lesson {
         return !this.published;
     }
 
+    public void addMember(Account account) {
+        this.getMembers().add(account);
+        this.memberCount++;
+    }
+
+    public void leaveMember(Account account) {
+        this.getMembers().remove(account);
+        this.memberCount--;
+    }
 }

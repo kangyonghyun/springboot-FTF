@@ -66,4 +66,19 @@ public class LessonController {
         model.addAttribute(lesson);
         return "lesson/members";
     }
+
+    @GetMapping("/lesson/{path}/join")
+    public String joinLesson(@CurrentUser Account account, @PathVariable String path) {
+        Lesson lesson = lessonRepository.findLessonWithMembersByPath(path);
+        lessonService.addMember(lesson, account);
+        return "redirect:/lesson/" + lesson.getPath() + "/members";
+    }
+
+    @GetMapping("/lesson/{path}/leave")
+    public String leaveLesson(@CurrentUser Account account, @PathVariable String path) {
+        Lesson lesson = lessonRepository.findLessonWithMembersByPath(path);
+        lessonService.leaveMember(lesson, account);
+        return "redirect:/lesson/" + lesson.getPath() + "/members";
+    }
+
 }
