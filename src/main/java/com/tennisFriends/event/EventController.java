@@ -86,4 +86,33 @@ public class EventController {
         model.addAttribute("oldEvents", oldEvents);
         return "lesson/events";
     }
+
+    @GetMapping("/events/{id}/edit")
+    public String updateEventForm(@CurrentUser Account account, @PathVariable String path,
+                                  @PathVariable("id") Event event, Model model) {
+        Lesson lesson = lessonService.getLessonToUpdate(account, path);
+        model.addAttribute(lesson);
+        model.addAttribute(account);
+        model.addAttribute(event);
+        model.addAttribute(modelMapper.map(event, EventForm.class));
+        return "event/update-form";
+    }
+
+    @PostMapping("/events/{id}/edit")
+    public String updateEventSubmit(@CurrentUser Account account, @PathVariable String path,
+                                    @PathVariable("id") Event event, @Valid EventForm eventForm, Errors errors, Model model) {
+        Lesson lesson = lessonService.getLessonToUpdate(account, path);
+        eventForm.setEventType(eventForm.getEventType());
+        eventValidator.validateUpdateForm(eventForm, event, errors);
+
+        if (errors.hasErrors()) {
+            model.addAttribute(account);
+            model.addAttribute(lesson);
+            model.addAttribute(event);
+            return "event/update-form";
+        }
+
+        eventService.updateEvent(event, eventForm);
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/events/" + event.getId();
+    }
 }
