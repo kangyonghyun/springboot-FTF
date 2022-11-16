@@ -115,4 +115,11 @@ public class EventController {
         eventService.updateEvent(event, eventForm);
         return "redirect:/lesson/" + lesson.getEncodePath() + "/events/" + event.getId();
     }
+
+    @DeleteMapping("/events/{id}")
+    public String cancelEvent(@CurrentUser Account account, @PathVariable String path, @PathVariable("id") Event event) {
+        Lesson lesson = lessonService.getLessonToUpdateStatus(account, path);
+        eventService.deleteEvent(event);
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/events";
+    }
 }
