@@ -55,7 +55,7 @@ public class EventController {
             return "event/form";
         }
         Event event = eventService.createEvent(modelMapper.map(eventForm, Event.class), lesson, account);
-        return "redirect:/lesson/" + lesson.getPath() + "/events/" + event.getId();
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/events/" + event.getId();
     }
 
     @GetMapping("/events/{id}")
@@ -121,5 +121,13 @@ public class EventController {
         Lesson lesson = lessonService.getLessonToUpdateStatus(account, path);
         eventService.deleteEvent(event);
         return "redirect:/lesson/" + lesson.getEncodePath() + "/events";
+    }
+
+    @PostMapping("/events/{id}/enroll")
+    public String newEnrollment(@CurrentUser Account account, @PathVariable String path,
+                                @PathVariable("id") Event event) {
+        Lesson lesson = lessonService.getLessonToEnroll(path);
+        eventService.newEnrollment(event, account);
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/events/" + event.getId();
     }
 }

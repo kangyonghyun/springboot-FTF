@@ -1,6 +1,7 @@
 package com.tennisFriends.event;
 
 import com.tennisFriends.domain.Account;
+import com.tennisFriends.domain.Enrollment;
 import com.tennisFriends.domain.Event;
 import com.tennisFriends.domain.Lesson;
 import com.tennisFriends.event.form.EventForm;
@@ -18,6 +19,7 @@ public class EventService {
 
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
+    private final EnrollmentRepository enrollmentRepository;
 
     public Event createEvent(Event event, Lesson lesson, Account account) {
         event.setCreatedBy(account);
@@ -32,5 +34,16 @@ public class EventService {
 
     public void deleteEvent(Event event) {
         eventRepository.delete(event);
+    }
+
+    public void newEnrollment(Event event, Account account) {
+        if (!enrollmentRepository.existsByEventAndAccount(event, account)) {
+            Enrollment enrollment = new Enrollment();
+            enrollment.setEnrolledAt(LocalDateTime.now());
+            enrollment.setAccepted(event.isAbleToAcceptWaitingEnrollment());
+            enrollment.setAccount(account);
+            event.addEnrollment(enrollment);
+            enrollmentRepository.save(enrollment);
+        }
     }
 }

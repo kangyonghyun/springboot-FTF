@@ -154,4 +154,10 @@ public class LessonService {
     public void leaveMember(Lesson lesson, Account account) {
         lesson.leaveMember(account);
     }
+
+    public Lesson getLessonToEnroll(String path) {
+        Lesson lesson = lessonRepository.findLessonOnlyByPath(path);
+        checkIfExistingLesson(path, lesson);
+        return lesson;
+    }
 }
