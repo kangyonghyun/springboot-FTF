@@ -63,4 +63,12 @@ public class EventService {
     public void cancelCheckInEnrollment(Enrollment enrollment) {
         enrollment.setAttended(false);
     }
+
+    public void acceptEnrollment(Event event, Enrollment enrollment) {
+        event.accept(enrollment);
+    }
+
+    public void rejectEnrollment(Event event, Enrollment enrollment) {
+        event.reject(enrollment);
+    }
 }

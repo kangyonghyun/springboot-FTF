@@ -158,4 +158,20 @@ public class EventController {
         return "redirect:/lesson/" + lesson.getEncodePath() + "/events/" + event.getId();
     }
 
+    @GetMapping("events/{eventId}/enrollments/{enrollmentId}/accept")
+    public String acceptEnrollment(@CurrentUser Account account, @PathVariable String path,
+                                   @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
+        Lesson lesson = lessonService.getLessonToUpdate(account, path);
+        eventService.acceptEnrollment(event, enrollment);
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/events/" + event.getId();
+    }
+
+    @GetMapping("/events/{eventId}/enrollments/{enrollmentId}/reject")
+    public String rejectEnrollment(@CurrentUser Account account, @PathVariable String path,
+                                   @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
+        Lesson lesson = lessonService.getLessonToUpdate(account, path);
+        eventService.rejectEnrollment(event, enrollment);
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/events/" + event.getId();
+    }
+
 }
