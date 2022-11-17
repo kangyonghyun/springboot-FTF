@@ -46,4 +46,13 @@ public class EventService {
             enrollmentRepository.save(enrollment);
         }
     }
+
+    public void cancelEnrollment(Event event, Account account) {
+        Enrollment enrollment = enrollmentRepository.findByEventAndAccount(event, account);
+        if (!enrollment.isAttended()) {
+            event.removeEnrollment(enrollment);
+            enrollmentRepository.delete(enrollment);
+            event.acceptNextWaitingEnrollment();
+        }
+    }
 }

@@ -130,4 +130,14 @@ public class EventController {
         eventService.newEnrollment(event, account);
         return "redirect:/lesson/" + lesson.getEncodePath() + "/events/" + event.getId();
     }
+
+    @PostMapping("/events/{id}/disenroll")
+    public String cancelEnrollment(@CurrentUser Account account, @PathVariable String path,
+                                   @PathVariable("id") Event event) {
+        Lesson lesson = lessonService.getLessonToEnroll(path);
+        eventService.cancelEnrollment(event, account);
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/events/" + event.getId();
+    }
+
+
 }
