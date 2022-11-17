@@ -55,4 +55,12 @@ public class EventService {
             event.acceptNextWaitingEnrollment();
         }
     }
+
+    public void checkInEnrollment(Enrollment enrollment) {
+        enrollment.setAttended(true);
+    }
+
+    public void cancelCheckInEnrollment(Enrollment enrollment) {
+        enrollment.setAttended(false);
+    }
 }

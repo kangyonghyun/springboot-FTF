@@ -2,10 +2,12 @@ package com.tennisFriends.event;
 
 import com.tennisFriends.account.CurrentUser;
 import com.tennisFriends.domain.Account;
+import com.tennisFriends.domain.Enrollment;
 import com.tennisFriends.domain.Event;
 import com.tennisFriends.domain.Lesson;
 import com.tennisFriends.event.form.EventForm;
 import com.tennisFriends.event.validator.EventValidator;
+import com.tennisFriends.lesson.LessonRepository;
 import com.tennisFriends.lesson.LessonService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -30,6 +32,7 @@ public class EventController {
     private final ModelMapper modelMapper;
     private final EventValidator eventValidator;
     private final EventRepository eventRepository;
+    private final LessonRepository lessonRepository;
 
     @InitBinder("eventForm")
     public void initBinder(WebDataBinder webDataBinder) {
@@ -59,10 +62,10 @@ public class EventController {
     }
 
     @GetMapping("/events/{id}")
-    public String getEvent(@CurrentUser Account account, @PathVariable String path, @PathVariable Long id, Model model) {
+    public String getEvent(@CurrentUser Account account, @PathVariable String path, @PathVariable("id") Event event, Model model) {
         model.addAttribute(account);
-        model.addAttribute(eventRepository.findById(id).orElseThrow());
-        model.addAttribute(lessonService.getLesson(path));
+        model.addAttribute(event);
+        model.addAttribute(lessonRepository.findLessonOnlyByPath(path));
         return "event/view";
     }
 
@@ -139,5 +142,20 @@ public class EventController {
         return "redirect:/lesson/" + lesson.getEncodePath() + "/events/" + event.getId();
     }
 
+    @GetMapping("/events/{eventId}/enrollments/{enrollmentId}/checkin")
+    public String checkInEnrollment(@CurrentUser Account account, @PathVariable String path,
+                                    @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
+        Lesson lesson = lessonService.getLessonToUpdate(account, path);
+        eventService.checkInEnrollment(enrollment);
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/events/" + event.getId();
+    }
+
+    @GetMapping("/events/{eventId}/enrollments/{enrollmentId}/cancel-checkin")
+    public String cancelCheckInEnrollment(@CurrentUser Account account, @PathVariable String path,
+                                    @PathVariable("eventId") Event event, @PathVariable("enrollmentId") Enrollment enrollment) {
+        Lesson lesson = lessonService.getLessonToUpdate(account, path);
+        eventService.cancelCheckInEnrollment(enrollment);
+        return "redirect:/lesson/" + lesson.getEncodePath() + "/events/" + event.getId();
+    }
 
 }
