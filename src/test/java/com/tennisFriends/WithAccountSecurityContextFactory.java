@@ -1,7 +1,7 @@
 package com.tennisFriends;
 
-import com.tennisFriends.account.AccountService;
-import com.tennisFriends.account.SignUpForm;
+import com.tennisFriends.modules.account.AccountService;
+import com.tennisFriends.modules.account.SignUpForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
