@@ -1,5 +1,7 @@
 package com.tennisFriends.modules.account;
 
+import com.tennisFriends.modules.account.form.SignUpForm;
+import com.tennisFriends.modules.account.validator.SignUpFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

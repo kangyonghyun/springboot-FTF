@@ -1,4 +1,4 @@
-package com.tennisFriends;
+package com.tennisFriends.modules.account;
 
 import org.springframework.security.test.context.support.WithSecurityContext;
 

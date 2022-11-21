@@ -1,11 +1,8 @@
 package com.tennisFriends.modules.lesson;
 
-import com.tennisFriends.WithAccount;
+import com.tennisFriends.modules.account.WithAccount;
 import com.tennisFriends.modules.account.AccountRepository;
 import com.tennisFriends.modules.account.Account;
-import com.tennisFriends.modules.lesson.Lesson;
-import com.tennisFriends.modules.lesson.LessonRepository;
-import com.tennisFriends.modules.lesson.LessonService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;

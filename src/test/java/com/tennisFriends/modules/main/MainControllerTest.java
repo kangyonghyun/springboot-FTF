@@ -2,7 +2,7 @@ package com.tennisFriends.modules.main;
 
 import com.tennisFriends.modules.account.AccountRepository;
 import com.tennisFriends.modules.account.AccountService;
-import com.tennisFriends.modules.account.SignUpForm;
+import com.tennisFriends.modules.account.form.SignUpForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -1,6 +1,6 @@
-package com.tennisFriends.modules.settings.validator;
+package com.tennisFriends.modules.account.validator;
 
-import com.tennisFriends.modules.settings.form.PasswordForm;
+import com.tennisFriends.modules.account.form.PasswordForm;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 

@@ -1,15 +1,11 @@
-package com.tennisFriends.modules.settings;
+package com.tennisFriends.modules.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tennisFriends.WithAccount;
-import com.tennisFriends.modules.account.AccountRepository;
-import com.tennisFriends.modules.account.AccountService;
-import com.tennisFriends.modules.account.Account;
+import com.tennisFriends.modules.account.form.TagForm;
+import com.tennisFriends.modules.account.form.ZoneForm;
 import com.tennisFriends.modules.tag.Tag;
-import com.tennisFriends.modules.zone.Zone;
-import com.tennisFriends.modules.settings.form.TagForm;
-import com.tennisFriends.modules.settings.form.ZoneForm;
 import com.tennisFriends.modules.tag.TagRepository;
+import com.tennisFriends.modules.zone.Zone;
 import com.tennisFriends.modules.zone.ZoneRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
-import static com.tennisFriends.modules.settings.SettingsController.*;
+import static com.tennisFriends.modules.account.SettingsController.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

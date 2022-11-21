@@ -1,7 +1,7 @@
-package com.tennisFriends.modules.settings.validator;
+package com.tennisFriends.modules.account.validator;
 
 import com.tennisFriends.modules.account.AccountRepository;
-import com.tennisFriends.modules.settings.form.NicknameForm;
+import com.tennisFriends.modules.account.form.NicknameForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

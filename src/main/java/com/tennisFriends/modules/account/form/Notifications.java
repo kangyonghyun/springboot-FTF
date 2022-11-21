@@ -1,4 +1,4 @@
-package com.tennisFriends.modules.settings.form;
+package com.tennisFriends.modules.account.form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

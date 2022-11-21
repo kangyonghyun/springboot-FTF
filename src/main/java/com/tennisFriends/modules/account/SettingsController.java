@@ -1,16 +1,13 @@
-package com.tennisFriends.modules.settings;
+package com.tennisFriends.modules.account;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tennisFriends.modules.account.AccountService;
-import com.tennisFriends.modules.account.CurrentUser;
-import com.tennisFriends.modules.account.Account;
-import com.tennisFriends.modules.settings.form.*;
-import com.tennisFriends.modules.settings.validator.PasswordFormValidator;
+import com.tennisFriends.modules.account.form.*;
+import com.tennisFriends.modules.account.validator.PasswordFormValidator;
 import com.tennisFriends.modules.tag.TagRepository;
 import com.tennisFriends.modules.tag.Tag;
 import com.tennisFriends.modules.zone.Zone;
-import com.tennisFriends.modules.settings.validator.NicknameValidator;
+import com.tennisFriends.modules.account.validator.NicknameValidator;
 import com.tennisFriends.modules.zone.ZoneRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -28,8 +25,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.tennisFriends.modules.settings.SettingsController.ROOT;
-import static com.tennisFriends.modules.settings.SettingsController.SETTINGS;
+import static com.tennisFriends.modules.account.SettingsController.ROOT;
+import static com.tennisFriends.modules.account.SettingsController.SETTINGS;
 
 @Controller
 @RequestMapping(ROOT + SETTINGS)

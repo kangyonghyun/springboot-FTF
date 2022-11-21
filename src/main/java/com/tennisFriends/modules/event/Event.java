@@ -1,7 +1,7 @@
 package com.tennisFriends.modules.event;
 
 import com.tennisFriends.modules.account.Account;
-import com.tennisFriends.modules.account.UserAccount;
+import com.tennisFriends.modules.account.form.UserAccount;
 import com.tennisFriends.modules.lesson.Lesson;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

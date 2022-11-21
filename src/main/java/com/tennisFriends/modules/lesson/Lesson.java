@@ -1,7 +1,7 @@
 package com.tennisFriends.modules.lesson;
 
 import com.tennisFriends.modules.account.Account;
-import com.tennisFriends.modules.account.UserAccount;
+import com.tennisFriends.modules.account.form.UserAccount;
 import com.tennisFriends.modules.tag.Tag;
 import com.tennisFriends.modules.zone.Zone;
 import lombok.*;

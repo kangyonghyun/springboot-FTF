@@ -1,8 +1,10 @@
 package com.tennisFriends.modules.account;
 
 import com.tennisFriends.infra.config.AppProperties;
-import com.tennisFriends.modules.settings.form.Notifications;
-import com.tennisFriends.modules.settings.form.Profile;
+import com.tennisFriends.modules.account.form.Notifications;
+import com.tennisFriends.modules.account.form.Profile;
+import com.tennisFriends.modules.account.form.SignUpForm;
+import com.tennisFriends.modules.account.form.UserAccount;
 import com.tennisFriends.modules.tag.Tag;
 import com.tennisFriends.modules.zone.Zone;
 import com.tennisFriends.infra.mail.EmailMessage;
