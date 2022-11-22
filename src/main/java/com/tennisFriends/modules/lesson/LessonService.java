@@ -1,11 +1,13 @@
 package com.tennisFriends.modules.lesson;
 
 import com.tennisFriends.modules.account.Account;
+import com.tennisFriends.modules.lesson.event.LessonCreatedEvent;
 import com.tennisFriends.modules.tag.Tag;
 import com.tennisFriends.modules.zone.Zone;
 import com.tennisFriends.modules.lesson.form.LessonDescriptionForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +21,12 @@ public class LessonService {
 
     private final LessonRepository lessonRepository;
     private final ModelMapper modelMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Lesson createNewLesson(Lesson lesson, Account account) {
         Lesson newLesson = lessonRepository.save(lesson);
         newLesson.addManager(account);
+        eventPublisher.publishEvent(new LessonCreatedEvent(newLesson));
         return newLesson;
     }
 
