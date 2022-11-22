@@ -1,5 +1,6 @@
 package com.tennisFriends.modules.account;
 
+import com.tennisFriends.infra.AbstractContainerBaseTest;
 import com.tennisFriends.infra.MockMvcTest;
 import com.tennisFriends.infra.mail.EmailMessage;
 import com.tennisFriends.infra.mail.EmailService;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcTest
-class AccountControllerTest {
+class AccountControllerTest extends AbstractContainerBaseTest {
 
     @Autowired
     private MockMvc mockMvc;

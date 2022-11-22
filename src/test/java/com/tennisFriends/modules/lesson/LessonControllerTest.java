@@ -1,5 +1,6 @@
 package com.tennisFriends.modules.lesson;
 
+import com.tennisFriends.infra.AbstractContainerBaseTest;
 import com.tennisFriends.infra.MockMvcTest;
 import com.tennisFriends.modules.account.Account;
 import com.tennisFriends.modules.account.AccountRepository;
@@ -17,7 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @MockMvcTest
-class LessonControllerTest {
+class LessonControllerTest extends AbstractContainerBaseTest {
 
     @Autowired
     MockMvc mockMvc;
